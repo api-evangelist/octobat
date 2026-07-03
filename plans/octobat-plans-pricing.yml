@@ -1,0 +1,136 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Octobat
+providerId: octobat
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Billing
+- Invoicing
+- Tax Compliance
+- VAT
+- Plans
+description: >-
+  Octobat historically sold its billing / invoicing / tax-compliance product on
+  a tiered SaaS subscription, typically ranging from a starter tier for small
+  online businesses up through growth and enterprise tiers, priced on invoice /
+  transaction volume with the tax-determination API and Beanie checkout bundled
+  in. Following Octobat's acquisition by Mirakl in November 2021, the standalone
+  pricing page (octobat.com/pricing) now redirects to mirakl.com and public,
+  reconciled tier pricing is no longer published; Octobat's invoice-compliance
+  capability is largely delivered as part of the Mirakl marketplace platform.
+  The tiers below are modeled placeholders, not confirmed current rates.
+notes: >-
+  Pricing is NOT reconciled. octobat.com/pricing redirects to mirakl.com as of
+  the review date. Existing integrators and new customers should contact Octobat
+  (support@octobat.com) or Mirakl for current commercial terms. Treat the amounts
+  and volume bands here as structural placeholders only.
+sources:
+- https://www.octobat.com/
+- https://docs.octobat.com
+- https://www.mirakl.com/news/mirakl-acquires-invoice-compliance-startup-octobat
+plans:
+- id: octobat-starter
+  name: Starter
+  type: subscription
+  description: >-
+    Entry tier for small online businesses that need compliant invoices and
+    basic tax determination, with a bounded monthly invoice / transaction
+    volume. Amount and volume band are modeled placeholders.
+  entries:
+  - label: Monthly Subscription
+    name: starter_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact Octobat (pricing not published)
+    userMultiplied: false
+  - label: Included Documents
+    name: starter_documents
+    type: usage
+    metric: documents
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included up to plan allowance
+    userMultiplied: false
+  elements:
+  - name: Compliant Invoicing
+  - name: Tax Determination API
+  - name: Beanie Checkout
+- id: octobat-growth
+  name: Growth
+  type: subscription
+  description: >-
+    Mid tier for scaling businesses with higher invoice / transaction volume,
+    multiple tax IDs, and subscription / recurring-billing support. Modeled
+    placeholder tier.
+  entries:
+  - label: Monthly Subscription
+    name: growth_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact Octobat (pricing not published)
+    userMultiplied: false
+  elements:
+  - name: Higher Volume Allowance
+  - name: Multiple Tax IDs
+  - name: Subscriptions and Usage Billing
+  - name: Credit Notes
+- id: octobat-plaza-platform
+  name: Plaza / Platform
+  type: subscription
+  description: >-
+    Marketplace / platform tier (Octobat Plaza) for managing tax and compliant
+    invoicing on behalf of connected merchant / supplier accounts, including
+    self-billing and commission invoices. Modeled placeholder tier.
+  entries:
+  - label: Platform Subscription
+    name: plaza_subscription
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: contact Octobat / Mirakl (pricing not published)
+    userMultiplied: false
+  elements:
+  - name: Connected Account Onboarding
+  - name: Platform Tax Management
+  - name: Payouts and Balance Reconciliation
+- id: octobat-enterprise
+  name: Enterprise / Mirakl
+  type: enterprise
+  description: >-
+    Custom enterprise agreement, now typically delivered as part of the Mirakl
+    marketplace platform, covering high volume, custom compliance regions, SLAs,
+    and negotiated terms.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Global Compliance Regions
+  - name: SLAs and Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

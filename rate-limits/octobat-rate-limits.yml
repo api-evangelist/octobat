@@ -1,0 +1,60 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Octobat
+providerId: octobat
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Billing
+- Invoicing
+- Tax Compliance
+- Rate Limiting
+- Quotas
+description: >-
+  Octobat does not publish fixed numeric rate limits for its REST API
+  (https://apiv2.octobat.com) in its public documentation. As a Stripe-style
+  billing API it is expected to apply per-account request throttling and to
+  return HTTP 429 (Too Many Requests) when limits are exceeded; clients should
+  implement exponential backoff with jitter. Test-mode (sk_test_) and live-mode
+  (sk_live_) keys are metered separately. Practical throughput is also bounded
+  by each account's plan-level invoice / transaction volume allowance rather
+  than by a documented per-minute request cap.
+notes: >-
+  No numeric per-second / per-minute API limits are documented as of the review
+  date. Values here are NOT reconciled. Verify current limits with Octobat
+  (support@octobat.com) or Mirakl. The 429 response code is the conventional
+  Stripe-style throttling signal and is assumed, not confirmed in Octobat's docs.
+sources:
+- https://docs.octobat.com/octobat/development/api
+- https://docs.octobat.com/octobat/integrations-docs/generic-integration/register-transactions-in-octobat
+- https://www.octobat.com/
+responseCodes:
+  throttled: 429
+limits:
+- name: API Requests
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the apiv2.octobat.com API.
+- name: Document Volume
+  scope: account
+  metric: documents
+  limit: per plan
+  notes: Invoice / credit-note / transaction throughput is governed by the account's subscription tier allowance.
+- name: Test vs Live
+  scope: key
+  metric: requests
+  limit: separate per mode
+  notes: Test-mode and live-mode secret keys are throttled and metered independently.
+policies:
+- name: Backoff Strategy
+  description: On HTTP 429, implement exponential backoff with jitter and honor any Retry-After header before retrying.
+- name: Idempotency
+  description: Follow Stripe-style safe-retry practices for create requests to avoid duplicate invoices or transactions on retry.
+- name: Environment Separation
+  description: Use sk_test_ keys for development and sk_live_ keys for production; the two environments are isolated.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

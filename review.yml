@@ -1,0 +1,144 @@
+aid: octobat
+name: Octobat
+review:
+  question: Does Octobat expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-03'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Octobat's public surface is a
+    Stripe-style request/response REST API at https://apiv2.octobat.com. There
+    is no server-push transport (WebSocket or SSE) on Octobat's own API to
+    model. Octobat can send outbound webhook (HTTP callback) notifications for
+    events, but those are server-to-endpoint HTTP POSTs, not a bidirectional or
+    streaming WebSocket, and there is no documented event-stream channel.
+findings:
+  summary: |
+    Octobat does not publish a documented public WebSocket API. Octobat is a
+    billing, invoicing, and tax-compliance platform for online businesses. Its
+    public API is a Stripe-style REST API with base URL https://apiv2.octobat.com,
+    authenticated via HTTP Basic using a secret key as the username with an
+    empty password (test keys sk_test_, live keys sk_live_). All documented
+    interaction is request/response REST over HTTPS - creating customers,
+    invoices, invoice items, transactions, and running real-time tax
+    determination via tax_evidences / tax_evidence_requests. No realtime,
+    bidirectional, or streaming WebSocket (ws:// or wss://) endpoint is
+    documented anywhere in Octobat's developer documentation or SDKs.
+  operatingStatus: |
+    Octobat is in a post-acquisition, maintenance / integrated state rather than
+    an actively marketed standalone product. Mirakl acquired Octobat in
+    November 2021 (its first-ever acquisition) to add invoice-compliance to the
+    Mirakl marketplace platform. As of this review, the bare domain octobat.com
+    does not resolve, and www.octobat.com/apidoc and www.octobat.com/pricing
+    now 302-redirect to mirakl.com. However, the developer documentation at
+    docs.octobat.com and the API at apiv2.octobat.com remain reachable, and the
+    official SDKs (e.g. the Ruby gem github.com/0ctobat/octobat-ruby) are still
+    published. The product's invoice-compliance capability is now largely
+    delivered as part of Mirakl. Existing integrators still have API access;
+    new prospective users are effectively routed to Mirakl. Public, reconciled
+    pricing is no longer available.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://apiv2.octobat.com
+      documented: true
+      note: Stripe-style resource-oriented REST. HTTP Basic auth (secret key as username, empty password).
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Octobat can POST event notifications to a configured HTTP endpoint. Server-to-endpoint HTTP callback, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Octobat's docs, API reference, or SDKs as of the review date.
+  endpointsConfirmedRest:
+    - POST  https://apiv2.octobat.com/customers
+    - POST  https://apiv2.octobat.com/invoices
+    - POST  https://apiv2.octobat.com/invoices/{id}/items
+    - PATCH https://apiv2.octobat.com/invoices/{id}/confirm
+    - POST  https://apiv2.octobat.com/transactions
+    - POST  https://apiv2.octobat.com/tax_evidences
+    - POST  https://apiv2.octobat.com/tax_evidence_requests
+  endpointsModeledRest:
+    - GET    https://apiv2.octobat.com/invoices
+    - GET    https://apiv2.octobat.com/invoices/{id}
+    - PATCH  https://apiv2.octobat.com/invoices/{id}
+    - DELETE https://apiv2.octobat.com/invoices/{id}
+    - POST   https://apiv2.octobat.com/invoices/{id}/send
+    - PATCH  https://apiv2.octobat.com/invoices/{id}/set_payment_terms
+    - PATCH  https://apiv2.octobat.com/invoices/{id}/mark_uncollectible
+    - PATCH  https://apiv2.octobat.com/invoices/{id}/cancel
+    - PATCH  https://apiv2.octobat.com/invoices/{id}/cancel_and_replace
+    - POST   https://apiv2.octobat.com/invoices/pdf_export
+    - POST   https://apiv2.octobat.com/invoices/csv_export
+    - GET    https://apiv2.octobat.com/credit_notes
+    - POST   https://apiv2.octobat.com/credit_notes
+    - GET    https://apiv2.octobat.com/credit_notes/{id}
+    - GET    https://apiv2.octobat.com/transactions
+    - GET    https://apiv2.octobat.com/transactions/{id}
+    - PATCH  https://apiv2.octobat.com/transactions/{id}
+    - POST   https://apiv2.octobat.com/transactions/csv_export
+    - GET    https://apiv2.octobat.com/customers
+    - GET    https://apiv2.octobat.com/customers/{id}
+    - PATCH  https://apiv2.octobat.com/customers/{id}
+    - DELETE https://apiv2.octobat.com/customers/{id}
+    - GET    https://apiv2.octobat.com/products
+    - POST   https://apiv2.octobat.com/products
+    - GET    https://apiv2.octobat.com/products/{id}
+    - PATCH  https://apiv2.octobat.com/products/{id}
+    - POST   https://apiv2.octobat.com/tax_evidence_requests/for_supplier
+    - GET    https://apiv2.octobat.com/coupons
+    - POST   https://apiv2.octobat.com/coupons
+    - GET    https://apiv2.octobat.com/coupons/{id}
+    - PATCH  https://apiv2.octobat.com/coupons/{id}
+    - DELETE https://apiv2.octobat.com/coupons/{id}
+    - PATCH  https://apiv2.octobat.com/coupons/{id}/activate
+    - PATCH  https://apiv2.octobat.com/coupons/{id}/unactivate
+    - GET    https://apiv2.octobat.com/subscriptions
+    - POST   https://apiv2.octobat.com/subscriptions
+    - GET    https://apiv2.octobat.com/subscriptions/{id}
+    - POST   https://apiv2.octobat.com/usage_items
+    - GET    https://apiv2.octobat.com/payouts
+    - GET    https://apiv2.octobat.com/payouts/{id}
+    - POST   https://apiv2.octobat.com/payouts/csv_export
+  modelingNote: |
+    endpointsConfirmedRest paths are demonstrated directly in Octobat's own
+    documentation (the generic-integration "register transactions" and
+    "tax calculation for a cart or an order" guides). endpointsModeledRest
+    paths are derived from Octobat's official Ruby SDK
+    (github.com/0ctobat/octobat-ruby), whose APIResource base class builds each
+    resource URL as the snake_cased, pluralized class name and uses POST to
+    create, PATCH to update, GET to retrieve/list, and DELETE to remove; the
+    special action routes (confirm, cancel, activate, csv_export, for_supplier,
+    etc.) are taken verbatim from the SDK resource classes. Field-level request
+    and response schemas are representative and should be verified against the
+    live reference at https://v2apidoc.octobat.com.
+sources:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+    note: Octobat API overview; publishable vs secret keys, testmode vs livemode, RESTful API.
+  - url: https://docs.octobat.com/octobat/integrations-docs/generic-integration/register-transactions-in-octobat
+    type: Documentation
+    note: Confirms base URL https://apiv2.octobat.com, HTTP Basic auth, and POST /customers, POST /invoices, POST /invoices/{id}/items, PATCH /invoices/{id}/confirm, POST /transactions.
+  - url: https://docs.octobat.com/octobat/integrations-docs/generic-integration/tax-calculation-for-a-cart-or-an-order
+    type: Documentation
+    note: Confirms POST /tax_evidences and POST /tax_evidence_requests for tax determination.
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+    note: Octobat v2 API reference (live). No WebSocket surface listed.
+  - url: https://github.com/0ctobat/octobat-ruby
+    type: SourceCode
+    note: Official Ruby SDK; source of the resource list and action routes (invoices, credit_notes, transactions, customers, products, tax_evidences, tax_evidence_requests, coupons, subscriptions, usage_items, payouts, payment_sources, payouts, plaza, reporting).
+  - url: https://www.mirakl.com/news/mirakl-acquires-invoice-compliance-startup-octobat
+    type: Reference
+    note: Mirakl acquired Octobat, announced 2021-11-09 - basis for the operating-status note.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Octobat's own public API is
+    request/response REST (apiv2.octobat.com) with optional outbound webhook
+    (HTTP callback) notifications. No AsyncAPI document was created because
+    there is no documented server-push / streaming transport on Octobat's own
+    API to model.

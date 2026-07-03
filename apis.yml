@@ -1,0 +1,257 @@
+aid: octobat
+url: https://raw.githubusercontent.com/api-evangelist/octobat/refs/heads/main/apis.yml
+name: Octobat
+kind: company
+description: Octobat is a billing, invoicing, and tax-compliance platform for online
+  businesses. It automates the creation, delivery, and storage of legally compliant
+  invoices, credit notes, self-billing invoices, and tax receipts for every online
+  transaction, and provides a real-time tax (VAT / GST / sales tax) determination
+  engine for tax-exclusive and tax-inclusive billing models. Octobat integrates with
+  Stripe, GoCardless, and other payment providers, and exposes a Stripe-style REST
+  API at base URL https://apiv2.octobat.com authenticated with HTTP Basic (secret
+  key). Octobat also ships Beanie (a hosted checkout) and Plaza (marketplace / platform
+  tax and invoicing for connected accounts). Operating status - Octobat was acquired
+  by Mirakl in November 2021; the standalone marketing site (octobat.com) now redirects
+  to mirakl.com, while the developer documentation at docs.octobat.com and the
+  apiv2.octobat.com API remain available to existing integrators.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Billing
+- Invoicing
+- Tax Compliance
+- VAT
+- E-Commerce
+- Payments
+- Fintech
+created: '2026-07-03'
+modified: '2026-07-03'
+specificationVersion: '0.19'
+apis:
+- aid: octobat:octobat-invoices-api
+  name: Octobat Invoices API
+  tags:
+  - Invoices
+  - Billing
+  - Documents
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/development/api
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Create, list, retrieve, update, and delete compliant invoices, then add
+    invoice items, confirm (finalize) them, set payment terms, send them by email,
+    mark them uncollectible, cancel, cancel-and-replace, and export to PDF or CSV.
+    Confirming an invoice assigns it a sequential legal number; listing supports
+    filtering by customer and status (including due / unpaid invoices).
+- aid: octobat:octobat-credit-notes-api
+  name: Octobat Credit Notes API
+  tags:
+  - Credit Notes
+  - Refunds
+  - Documents
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/development/api
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Create, list, and retrieve compliant credit notes issued against invoices
+    for refunds, corrections, and cancellations, with the same numbering, tax, and
+    document-generation guarantees as invoices.
+- aid: octobat:octobat-transactions-api
+  name: Octobat Transactions API
+  tags:
+  - Transactions
+  - Payments
+  - Reconciliation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/integrations-docs/generic-integration/register-transactions-in-octobat
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/integrations-docs/generic-integration/register-transactions-in-octobat
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Register successful payments from any payment provider (Stripe, GoCardless,
+    or a generic integration) so Octobat can reconcile them against invoices, drive
+    tax reporting, and mark invoices as paid. Create, list, update transactions, list
+    their items, and export to CSV.
+- aid: octobat:octobat-customers-api
+  name: Octobat Customers API
+  tags:
+  - Customers
+  - Billing Details
+  - Tax
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/development/api
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Create, list, retrieve, update, and delete customers, capturing the billing
+    address, country, and tax number needed for compliant invoicing. List a customer's
+    invoices, credit notes, payment sources, and balance transactions.
+- aid: octobat:octobat-products-api
+  name: Octobat Products API
+  tags:
+  - Products
+  - Catalog
+  - Tax Categories
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/development/api
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Create, list, retrieve, and update products, including the product type
+    used to drive tax categorization (for example digital goods versus services) so
+    the tax engine applies the correct rate per jurisdiction.
+- aid: octobat:octobat-tax-evidence-api
+  name: Octobat Tax Evidence API
+  tags:
+  - Tax
+  - VAT
+  - Tax Determination
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/integrations-docs/generic-integration/tax-calculation-for-a-cart-or-an-order
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/integrations-docs/generic-integration/tax-calculation-for-a-cart-or-an-order
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Real-time tax determination engine. Create a TaxEvidence for a registered
+    customer, or a TaxEvidenceRequest for a not-yet-registered buyer at cart / checkout
+    time (including B2B reverse-charge via a tax number), returning the applied rate,
+    tax zone, and an evidence ID to store with the order for compliance and reconciliation.
+- aid: octobat:octobat-coupons-api
+  name: Octobat Coupons API
+  tags:
+  - Coupons
+  - Discounts
+  - Promotions
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/development/api
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Create, list, retrieve, update, activate, deactivate, and delete coupons
+    used to apply discounts to invoices and subscriptions.
+- aid: octobat:octobat-subscriptions-api
+  name: Octobat Subscriptions API
+  tags:
+  - Subscriptions
+  - Recurring Billing
+  - Usage
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/development/api
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: Create and list subscriptions for recurring-billing models, and record
+    usage items against a metered subscription so invoices reflect consumption for
+    usage-based and tax-exclusive pricing.
+- aid: octobat:octobat-payouts-api
+  name: Octobat Payouts API
+  tags:
+  - Payouts
+  - Balance
+  - Marketplace
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.octobat.com/octobat/development/api
+  baseURL: https://apiv2.octobat.com
+  properties:
+  - url: https://docs.octobat.com/octobat/development/api
+    type: Documentation
+  - url: https://v2apidoc.octobat.com
+    type: APIReference
+  - url: openapi/octobat-openapi.yml
+    type: OpenAPI
+  - url: collections/octobat.postman_collection.json
+    type: PostmanCollection
+  - url: collections/octobat.opencollection.json
+    type: OpenCollection
+  description: List and retrieve payouts, drill into the balance transactions that make
+    up each payout, and export payouts to CSV - the settlement side used by platforms
+    and marketplaces (Octobat Plaza) to reconcile funds paid to connected accounts.
+common:
+- type: GitHubOrganization
+  url: https://github.com/0ctobat
+- type: LinkedIn
+  url: https://www.linkedin.com/company/octobat
+- type: Website
+  url: https://www.octobat.com
+- type: Documentation
+  url: https://docs.octobat.com
+- type: Plans
+  url: plans/octobat-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/octobat-rate-limits.yml
+- type: FinOps
+  url: finops/octobat-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

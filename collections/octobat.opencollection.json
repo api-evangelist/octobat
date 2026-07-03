@@ -1,0 +1,197 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octobat API",
+    "version": "2.0",
+    "description": "Octobat billing, invoicing, and tax-compliance REST API. Base URL https://apiv2.octobat.com. HTTP Basic auth with your secret key as username and an empty password. Endpoints marked (confirmed) appear in Octobat's own documentation; the rest are modeled from the official Octobat Ruby SDK. Octobat was acquired by Mirakl in November 2021."
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{secretKey}}",
+      "password": ""
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Invoices", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List invoices", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/invoices" },
+          "docs": "Lists invoices; filter by customer and status (status=due for unpaid invoices)."
+        },
+        {
+          "info": { "name": "Create an invoice (confirmed)", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/invoices", "body": { "type": "json", "data": "{\"customer\":\"{{customerId}}\",\"currency\":\"EUR\",\"description\":\"Order #1234\"}" } },
+          "docs": "Creates a new invoice for a customer."
+        },
+        {
+          "info": { "name": "Retrieve an invoice", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/invoices/:id", "params": [ { "name": "id", "value": "", "type": "path" } ] },
+          "docs": "Retrieves an invoice by ID."
+        },
+        {
+          "info": { "name": "Add an item to an invoice (confirmed)", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/invoices/:id/items", "params": [ { "name": "id", "value": "", "type": "path" } ], "body": { "type": "json", "data": "{\"currency\":\"EUR\",\"gross_amount\":12000,\"description\":\"Widget\",\"tax_evidence\":\"{{taxEvidenceId}}\"}" } },
+          "docs": "Adds a line item to an invoice, using a tax_evidence ID or explicit tax params."
+        },
+        {
+          "info": { "name": "Confirm an invoice (confirmed)", "type": "http" },
+          "http": { "method": "PATCH", "url": "https://apiv2.octobat.com/invoices/:id/confirm", "params": [ { "name": "id", "value": "", "type": "path" } ] },
+          "docs": "Confirms (finalizes) an invoice and assigns its sequential legal number."
+        },
+        {
+          "info": { "name": "Cancel an invoice", "type": "http" },
+          "http": { "method": "PATCH", "url": "https://apiv2.octobat.com/invoices/:id/cancel", "params": [ { "name": "id", "value": "", "type": "path" } ] },
+          "docs": "Cancels an invoice."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Credit Notes", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List credit notes", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/credit_notes" },
+          "docs": "Lists credit notes."
+        },
+        {
+          "info": { "name": "Create a credit note", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/credit_notes", "body": { "type": "json", "data": "{\"customer\":\"{{customerId}}\",\"invoice\":\"{{invoiceId}}\",\"currency\":\"EUR\"}" } },
+          "docs": "Creates a credit note against an invoice."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Transactions", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List transactions", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/transactions" },
+          "docs": "Lists transactions; filter by customer or invoice."
+        },
+        {
+          "info": { "name": "Register a transaction (confirmed)", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/transactions", "body": { "type": "json", "data": "{\"customer\":\"{{customerId}}\",\"invoice\":\"{{invoiceId}}\",\"payment_recipient\":\"{{paymentRecipientId}}\",\"currency\":\"EUR\",\"amount\":12000,\"flow_type\":\"charge\",\"status\":\"succeeded\"}" } },
+          "docs": "Registers a successful payment for reconciliation and tax reporting."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Customers", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List customers", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/customers" },
+          "docs": "Lists customers."
+        },
+        {
+          "info": { "name": "Create a customer (confirmed)", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/customers", "body": { "type": "json", "data": "{\"name\":\"Acme Inc\",\"email\":\"billing@acme.example\",\"billing_address_country\":\"FR\",\"billing_address_zip\":\"75001\",\"billing_address_city\":\"Paris\"}" } },
+          "docs": "Creates a customer with billing and tax details."
+        },
+        {
+          "info": { "name": "Retrieve a customer", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/customers/:id", "params": [ { "name": "id", "value": "", "type": "path" } ] },
+          "docs": "Retrieves a customer by ID."
+        },
+        {
+          "info": { "name": "Update a customer", "type": "http" },
+          "http": { "method": "PATCH", "url": "https://apiv2.octobat.com/customers/:id", "params": [ { "name": "id", "value": "", "type": "path" } ], "body": { "type": "json", "data": "{\"tax_number\":\"FR12345678901\"}" } },
+          "docs": "Updates a customer."
+        },
+        {
+          "info": { "name": "Delete a customer", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://apiv2.octobat.com/customers/:id", "params": [ { "name": "id", "value": "", "type": "path" } ] },
+          "docs": "Deletes a customer."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Products", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List products", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/products" },
+          "docs": "Lists products."
+        },
+        {
+          "info": { "name": "Create a product", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/products", "body": { "type": "json", "data": "{\"name\":\"Pro Plan\",\"product_type\":\"service\"}" } },
+          "docs": "Creates a product with a tax-categorizing product_type."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Tax Evidence", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a tax evidence (registered customer) (confirmed)", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/tax_evidences", "body": { "type": "json", "data": "{\"customer\":\"{{customerId}}\",\"product_type\":\"service\"}" } },
+          "docs": "Determines tax for a registered customer and returns the applied rate."
+        },
+        {
+          "info": { "name": "Create a tax evidence request (checkout) (confirmed)", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/tax_evidence_requests", "body": { "type": "json", "data": "{\"customer_billing_address_country\":\"DE\",\"customer_billing_address_zip\":\"10115\",\"customer_billing_address_city\":\"Berlin\",\"product_type\":\"eservice\"}" } },
+          "docs": "Calculates tax at cart/checkout from a buyer's billing location."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Coupons", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List coupons", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/coupons" },
+          "docs": "Lists coupons."
+        },
+        {
+          "info": { "name": "Create a coupon", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/coupons", "body": { "type": "json", "data": "{\"code\":\"WELCOME10\",\"percent_off\":10}" } },
+          "docs": "Creates a discount coupon."
+        },
+        {
+          "info": { "name": "Activate a coupon", "type": "http" },
+          "http": { "method": "PATCH", "url": "https://apiv2.octobat.com/coupons/:id/activate", "params": [ { "name": "id", "value": "", "type": "path" } ] },
+          "docs": "Activates a coupon."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Subscriptions", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List subscriptions", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/subscriptions" },
+          "docs": "Lists subscriptions."
+        },
+        {
+          "info": { "name": "Create a subscription", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/subscriptions", "body": { "type": "json", "data": "{\"customer\":\"{{customerId}}\",\"currency\":\"EUR\"}" } },
+          "docs": "Creates a recurring-billing subscription."
+        },
+        {
+          "info": { "name": "Record a usage item", "type": "http" },
+          "http": { "method": "POST", "url": "https://apiv2.octobat.com/usage_items", "body": { "type": "json", "data": "{\"subscription\":\"{{subscriptionId}}\",\"quantity\":100}" } },
+          "docs": "Records metered usage against a subscription."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Payouts", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List payouts", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/payouts" },
+          "docs": "Lists payouts."
+        },
+        {
+          "info": { "name": "Retrieve a payout", "type": "http" },
+          "http": { "method": "GET", "url": "https://apiv2.octobat.com/payouts/:id", "params": [ { "name": "id", "value": "", "type": "path" } ] },
+          "docs": "Retrieves a payout and its balance transactions."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Octobat
+providerId: octobat
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Billing
+- Invoicing
+- Tax Compliance
+- VAT
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Octobat spend. Octobat is a SaaS billing / invoicing / tax
+  compliance product billed on a subscription basis, typically scaled by invoice
+  and transaction volume, with the tax-determination API and Beanie checkout
+  included. Because Octobat was acquired by Mirakl (November 2021) and its public
+  pricing page now redirects to mirakl.com, per-unit rates are not publicly
+  reconciled; for many customers the cost now folds into a broader Mirakl
+  marketplace platform agreement. Cost drivers to track are the subscription
+  tier and the monthly volume of documents (invoices, credit notes) and
+  transactions processed.
+notes: >-
+  Per-unit rates are NOT reconciled; verify with Octobat (support@octobat.com)
+  or Mirakl. Meters below are structural and represent the natural cost drivers
+  of a volume-based invoicing / tax platform, not confirmed billed line items.
+sources:
+- https://www.octobat.com/
+- https://docs.octobat.com
+- https://www.mirakl.com/news/mirakl-acquires-invoice-compliance-startup-octobat
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Octobat
+serviceCategory: Billing and Tax Compliance
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Monthly
+  billingCurrency: EUR
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Octobat
+  ServiceCategory: Billing and Tax Compliance
+  ProviderName: Octobat
+  PublisherName: Octobat
+  InvoiceIssuerName: Octobat (a Mirakl company)
+  BillingCurrency: EUR
+  ChargeCategory: Usage
+  PricingCategory: Subscription-Based
+meters:
+- name: subscription_tier
+  description: Recurring monthly subscription fee for the Octobat plan tier.
+  unit: subscription
+  aggregation: max
+  dimensions:
+  - account
+  - plan
+- name: documents_generated
+  description: Compliant invoices, credit notes, and other documents generated in the period.
+  unit: documents
+  aggregation: sum
+  dimensions:
+  - account
+  - document_type
+- name: transactions_registered
+  description: Payment transactions registered and reconciled through Octobat.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - account
+  - payment_recipient
+- name: tax_determinations
+  description: TaxEvidence / TaxEvidenceRequest calls made to the tax engine.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - tax_region
+principles:
+- name: Visibility
+  description: Track document and transaction volume per account and per tax region to understand what drives the subscription tier.
+- name: Allocation
+  description: Tag invoices and transactions by product line, brand, or connected Plaza account so compliance cost maps to internal cost centers.
+- name: Optimization
+  description: Right-size the subscription tier to actual monthly document volume; batch and export (PDF / CSV) rather than over-calling; consolidate under the Mirakl agreement where applicable.
+- name: Accountability
+  description: Assign an owner for the Octobat / Mirakl agreement and review monthly document and transaction volume against the plan allowance.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

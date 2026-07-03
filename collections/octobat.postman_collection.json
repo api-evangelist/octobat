@@ -1,0 +1,321 @@
+{
+  "info": {
+    "name": "Octobat API",
+    "description": "Octobat billing, invoicing, and tax-compliance REST API. Base URL: https://apiv2.octobat.com. Authentication is HTTP Basic - use your secret key as the username and leave the password empty (test keys sk_test_, live keys sk_live_). Endpoints marked (confirmed) appear in Octobat's own documentation; the rest are modeled from the official Octobat Ruby SDK (github.com/0ctobat/octobat-ruby). Operating status: Octobat was acquired by Mirakl in November 2021; docs.octobat.com and apiv2.octobat.com remain available.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{secretKey}}", "type": "string" },
+      { "key": "password", "value": "", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://apiv2.octobat.com", "type": "string" },
+    { "key": "secretKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Invoices",
+      "item": [
+        {
+          "name": "List invoices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/invoices?customer=&status=", "host": ["{{baseUrl}}"], "path": ["invoices"], "query": [ { "key": "customer", "value": "" }, { "key": "status", "value": "" } ] },
+            "description": "Lists invoices; filter by customer and status (use status=due for unpaid invoices)."
+          }
+        },
+        {
+          "name": "Create an invoice (confirmed)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customer\": \"{{customerId}}\",\n  \"currency\": \"EUR\",\n  \"description\": \"Order #1234\"\n}" },
+            "url": { "raw": "{{baseUrl}}/invoices", "host": ["{{baseUrl}}"], "path": ["invoices"] }
+          }
+        },
+        {
+          "name": "Retrieve an invoice",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/invoices/:id", "host": ["{{baseUrl}}"], "path": ["invoices", ":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Update an invoice",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"description\": \"Updated description\"\n}" },
+            "url": { "raw": "{{baseUrl}}/invoices/:id", "host": ["{{baseUrl}}"], "path": ["invoices", ":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Add an item to an invoice (confirmed)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"currency\": \"EUR\",\n  \"gross_amount\": 12000,\n  \"description\": \"Widget\",\n  \"tax_evidence\": \"{{taxEvidenceId}}\"\n}" },
+            "url": { "raw": "{{baseUrl}}/invoices/:id/items", "host": ["{{baseUrl}}"], "path": ["invoices", ":id", "items"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Confirm an invoice (confirmed)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{baseUrl}}/invoices/:id/confirm", "host": ["{{baseUrl}}"], "path": ["invoices", ":id", "confirm"], "variable": [{ "key": "id", "value": "" }] },
+            "description": "Confirms (finalizes) an invoice and assigns its sequential legal number."
+          }
+        },
+        {
+          "name": "Send an invoice by email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/invoices/:id/send", "host": ["{{baseUrl}}"], "path": ["invoices", ":id", "send"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Mark an invoice uncollectible",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/invoices/:id/mark_uncollectible", "host": ["{{baseUrl}}"], "path": ["invoices", ":id", "mark_uncollectible"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Cancel an invoice",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/invoices/:id/cancel", "host": ["{{baseUrl}}"], "path": ["invoices", ":id", "cancel"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Credit Notes",
+      "item": [
+        {
+          "name": "List credit notes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/credit_notes", "host": ["{{baseUrl}}"], "path": ["credit_notes"] }
+          }
+        },
+        {
+          "name": "Create a credit note",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customer\": \"{{customerId}}\",\n  \"invoice\": \"{{invoiceId}}\",\n  \"currency\": \"EUR\"\n}" },
+            "url": { "raw": "{{baseUrl}}/credit_notes", "host": ["{{baseUrl}}"], "path": ["credit_notes"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "List transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/transactions?invoice=", "host": ["{{baseUrl}}"], "path": ["transactions"], "query": [{ "key": "invoice", "value": "" }] }
+          }
+        },
+        {
+          "name": "Register a transaction (confirmed)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customer\": \"{{customerId}}\",\n  \"invoice\": \"{{invoiceId}}\",\n  \"payment_recipient\": \"{{paymentRecipientId}}\",\n  \"currency\": \"EUR\",\n  \"amount\": 12000,\n  \"flow_type\": \"charge\",\n  \"status\": \"succeeded\"\n}" },
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "List customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/customers", "host": ["{{baseUrl}}"], "path": ["customers"] }
+          }
+        },
+        {
+          "name": "Create a customer (confirmed)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Acme Inc\",\n  \"email\": \"billing@acme.example\",\n  \"billing_address_country\": \"FR\",\n  \"billing_address_zip\": \"75001\",\n  \"billing_address_city\": \"Paris\"\n}" },
+            "url": { "raw": "{{baseUrl}}/customers", "host": ["{{baseUrl}}"], "path": ["customers"] }
+          }
+        },
+        {
+          "name": "Retrieve a customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/customers/:id", "host": ["{{baseUrl}}"], "path": ["customers", ":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Update a customer",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tax_number\": \"FR12345678901\"\n}" },
+            "url": { "raw": "{{baseUrl}}/customers/:id", "host": ["{{baseUrl}}"], "path": ["customers", ":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        },
+        {
+          "name": "Delete a customer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/customers/:id", "host": ["{{baseUrl}}"], "path": ["customers", ":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/products", "host": ["{{baseUrl}}"], "path": ["products"] }
+          }
+        },
+        {
+          "name": "Create a product",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Pro Plan\",\n  \"product_type\": \"service\"\n}" },
+            "url": { "raw": "{{baseUrl}}/products", "host": ["{{baseUrl}}"], "path": ["products"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tax Evidence",
+      "item": [
+        {
+          "name": "Create a tax evidence for a registered customer (confirmed)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customer\": \"{{customerId}}\",\n  \"product_type\": \"service\"\n}" },
+            "url": { "raw": "{{baseUrl}}/tax_evidences", "host": ["{{baseUrl}}"], "path": ["tax_evidences"] }
+          }
+        },
+        {
+          "name": "Create a tax evidence request for a checkout (confirmed)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customer_billing_address_country\": \"DE\",\n  \"customer_billing_address_zip\": \"10115\",\n  \"customer_billing_address_city\": \"Berlin\",\n  \"product_type\": \"eservice\"\n}" },
+            "url": { "raw": "{{baseUrl}}/tax_evidence_requests", "host": ["{{baseUrl}}"], "path": ["tax_evidence_requests"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Coupons",
+      "item": [
+        {
+          "name": "List coupons",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/coupons", "host": ["{{baseUrl}}"], "path": ["coupons"] }
+          }
+        },
+        {
+          "name": "Create a coupon",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"code\": \"WELCOME10\",\n  \"percent_off\": 10\n}" },
+            "url": { "raw": "{{baseUrl}}/coupons", "host": ["{{baseUrl}}"], "path": ["coupons"] }
+          }
+        },
+        {
+          "name": "Activate a coupon",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/coupons/:id/activate", "host": ["{{baseUrl}}"], "path": ["coupons", ":id", "activate"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "List subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/subscriptions", "host": ["{{baseUrl}}"], "path": ["subscriptions"] }
+          }
+        },
+        {
+          "name": "Create a subscription",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"customer\": \"{{customerId}}\",\n  \"currency\": \"EUR\"\n}" },
+            "url": { "raw": "{{baseUrl}}/subscriptions", "host": ["{{baseUrl}}"], "path": ["subscriptions"] }
+          }
+        },
+        {
+          "name": "Record a usage item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"subscription\": \"{{subscriptionId}}\",\n  \"quantity\": 100\n}" },
+            "url": { "raw": "{{baseUrl}}/usage_items", "host": ["{{baseUrl}}"], "path": ["usage_items"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payouts",
+      "item": [
+        {
+          "name": "List payouts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/payouts", "host": ["{{baseUrl}}"], "path": ["payouts"] }
+          }
+        },
+        {
+          "name": "Retrieve a payout",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/payouts/:id", "host": ["{{baseUrl}}"], "path": ["payouts", ":id"], "variable": [{ "key": "id", "value": "" }] }
+          }
+        }
+      ]
+    }
+  ]
+}
