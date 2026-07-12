@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/octobat-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: 'HTTP Basic authentication. Use your Octobat secret key as the username and leave
+    the password empty (curl: -u sk_live_xxx:). Use sk_test_ keys for test mode and sk_live_
+    keys for live mode.'
+  sources:
+  - openapi/octobat-openapi.yml
