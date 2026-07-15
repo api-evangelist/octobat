@@ -238,6 +238,8 @@ apis:
     up each payout, and export payouts to CSV - the settlement side used by platforms
     and marketplaces (Octobat Plaza) to reconcile funds paid to connected accounts.
 common:
+- type: AgenticAccess
+  url: agentic-access/octobat-agentic-access.yml
 - type: DomainSecurity
   url: security/octobat-domain-security.yml
 - type: Authentication
