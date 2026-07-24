@@ -1,0 +1,122 @@
+openapi: 3.0.3
+info:
+  title: Octobat Coupons Payouts API
+  description: 'Octobat is a billing, invoicing, and tax-compliance platform for online businesses. This OpenAPI document describes the public REST API at base URL https://apiv2.octobat.com. The API is Stripe-style: resource-oriented, form or JSON request bodies, and HTTP Basic authentication using your secret key as the username with an empty password (curl: -u sk_live_xxx:). Test-mode keys (sk_test_) and live-mode keys (sk_live_) select the environment.
+
+
+    Endpoint provenance: paths marked "confirmed" are demonstrated directly in Octobat''s own documentation (register-transactions and tax-calculation guides). The remaining CRUD and action paths are modeled from Octobat''s official Ruby SDK (github.com/0ctobat/octobat-ruby), which derives resource URLs as the snake_cased, pluralized class name and uses POST to create, PATCH to update, GET to retrieve/list, and DELETE to remove. Request and response schemas are representative, not exhaustive; consult the live API reference at https://v2apidoc.octobat.com for full field-level detail.
+
+
+    Operating status: Octobat was acquired by Mirakl in November 2021. The standalone marketing site now redirects to mirakl.com; docs.octobat.com and apiv2.octobat.com remain available to existing integrators.'
+  version: '2.0'
+  contact:
+    name: Octobat
+    url: https://docs.octobat.com
+    email: support@octobat.com
+servers:
+- url: https://apiv2.octobat.com
+  description: Octobat API v2 (production)
+security:
+- basicAuth: []
+tags:
+- name: Payouts
+  description: Settlement payouts and their balance transactions.
+paths:
+  /payouts:
+    get:
+      operationId: listPayouts
+      tags:
+      - Payouts
+      summary: List payouts
+      responses:
+        '200':
+          description: A list of payouts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /payouts/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: retrievePayout
+      tags:
+      - Payouts
+      summary: Retrieve a payout
+      responses:
+        '200':
+          description: The requested payout.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /payouts/csv_export:
+    post:
+      operationId: exportPayoutsCsv
+      tags:
+      - Payouts
+      summary: Export payouts to CSV
+      responses:
+        '200':
+          description: Export accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    Payout:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          example: payout
+        amount:
+          type: integer
+        currency:
+          type: string
+        status:
+          type: string
+        arrival_date:
+          type: integer
+    PayoutList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payout'
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic authentication. Use your Octobat secret key as the username and leave the password empty (curl: -u sk_live_xxx:). Use sk_test_ keys for test mode and sk_live_ keys for live mode.'

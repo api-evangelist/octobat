@@ -1,0 +1,172 @@
+openapi: 3.0.3
+info:
+  title: Octobat Coupons Subscriptions API
+  description: 'Octobat is a billing, invoicing, and tax-compliance platform for online businesses. This OpenAPI document describes the public REST API at base URL https://apiv2.octobat.com. The API is Stripe-style: resource-oriented, form or JSON request bodies, and HTTP Basic authentication using your secret key as the username with an empty password (curl: -u sk_live_xxx:). Test-mode keys (sk_test_) and live-mode keys (sk_live_) select the environment.
+
+
+    Endpoint provenance: paths marked "confirmed" are demonstrated directly in Octobat''s own documentation (register-transactions and tax-calculation guides). The remaining CRUD and action paths are modeled from Octobat''s official Ruby SDK (github.com/0ctobat/octobat-ruby), which derives resource URLs as the snake_cased, pluralized class name and uses POST to create, PATCH to update, GET to retrieve/list, and DELETE to remove. Request and response schemas are representative, not exhaustive; consult the live API reference at https://v2apidoc.octobat.com for full field-level detail.
+
+
+    Operating status: Octobat was acquired by Mirakl in November 2021. The standalone marketing site now redirects to mirakl.com; docs.octobat.com and apiv2.octobat.com remain available to existing integrators.'
+  version: '2.0'
+  contact:
+    name: Octobat
+    url: https://docs.octobat.com
+    email: support@octobat.com
+servers:
+- url: https://apiv2.octobat.com
+  description: Octobat API v2 (production)
+security:
+- basicAuth: []
+tags:
+- name: Subscriptions
+  description: Recurring-billing subscriptions and metered usage.
+paths:
+  /subscriptions:
+    get:
+      operationId: listSubscriptions
+      tags:
+      - Subscriptions
+      summary: List subscriptions
+      responses:
+        '200':
+          description: A list of subscriptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createSubscription
+      tags:
+      - Subscriptions
+      summary: Create a subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer:
+                  type: string
+                currency:
+                  type: string
+      responses:
+        '200':
+          description: The created subscription.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /subscriptions/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: retrieveSubscription
+      tags:
+      - Subscriptions
+      summary: Retrieve a subscription
+      responses:
+        '200':
+          description: The requested subscription.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /usage_items:
+    post:
+      operationId: createUsageItem
+      tags:
+      - Subscriptions
+      summary: Record a usage item on a subscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - subscription
+              properties:
+                subscription:
+                  type: string
+                quantity:
+                  type: integer
+      responses:
+        '200':
+          description: The created usage item.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  object:
+                    type: string
+                    example: usage_item
+                  subscription:
+                    type: string
+                  quantity:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    SubscriptionList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subscription'
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          example: subscription
+        customer:
+          type: string
+        currency:
+          type: string
+        status:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic authentication. Use your Octobat secret key as the username and leave the password empty (curl: -u sk_live_xxx:). Use sk_test_ keys for test mode and sk_live_ keys for live mode.'

@@ -1,0 +1,187 @@
+openapi: 3.0.3
+info:
+  title: Octobat Coupons Transactions API
+  description: 'Octobat is a billing, invoicing, and tax-compliance platform for online businesses. This OpenAPI document describes the public REST API at base URL https://apiv2.octobat.com. The API is Stripe-style: resource-oriented, form or JSON request bodies, and HTTP Basic authentication using your secret key as the username with an empty password (curl: -u sk_live_xxx:). Test-mode keys (sk_test_) and live-mode keys (sk_live_) select the environment.
+
+
+    Endpoint provenance: paths marked "confirmed" are demonstrated directly in Octobat''s own documentation (register-transactions and tax-calculation guides). The remaining CRUD and action paths are modeled from Octobat''s official Ruby SDK (github.com/0ctobat/octobat-ruby), which derives resource URLs as the snake_cased, pluralized class name and uses POST to create, PATCH to update, GET to retrieve/list, and DELETE to remove. Request and response schemas are representative, not exhaustive; consult the live API reference at https://v2apidoc.octobat.com for full field-level detail.
+
+
+    Operating status: Octobat was acquired by Mirakl in November 2021. The standalone marketing site now redirects to mirakl.com; docs.octobat.com and apiv2.octobat.com remain available to existing integrators.'
+  version: '2.0'
+  contact:
+    name: Octobat
+    url: https://docs.octobat.com
+    email: support@octobat.com
+servers:
+- url: https://apiv2.octobat.com
+  description: Octobat API v2 (production)
+security:
+- basicAuth: []
+tags:
+- name: Transactions
+  description: Payments registered against invoices for reconciliation and tax reporting.
+paths:
+  /transactions:
+    get:
+      operationId: listTransactions
+      tags:
+      - Transactions
+      summary: List transactions
+      parameters:
+      - name: customer
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: invoice
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A list of transactions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createTransaction
+      tags:
+      - Transactions
+      summary: Register a transaction
+      description: Registers a successful payment so Octobat can reconcile it with an invoice and drive tax reporting. (Confirmed in Octobat docs.)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionCreate'
+      responses:
+        '200':
+          description: The created transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /transactions/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: retrieveTransaction
+      tags:
+      - Transactions
+      summary: Retrieve a transaction
+      responses:
+        '200':
+          description: The requested transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      operationId: updateTransaction
+      tags:
+      - Transactions
+      summary: Update a transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionCreate'
+      responses:
+        '200':
+          description: The updated transaction.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /transactions/csv_export:
+    post:
+      operationId: exportTransactionsCsv
+      tags:
+      - Transactions
+      summary: Export transactions to CSV
+      responses:
+        '200':
+          description: Export accepted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    TransactionList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    Transaction:
+      allOf:
+      - $ref: '#/components/schemas/TransactionCreate'
+      - type: object
+        properties:
+          id:
+            type: string
+          object:
+            type: string
+            example: transaction
+          created:
+            type: integer
+    TransactionCreate:
+      type: object
+      properties:
+        customer:
+          type: string
+        invoice:
+          type: string
+        payment_recipient:
+          type: string
+        currency:
+          type: string
+        amount:
+          type: integer
+        flow_type:
+          type: string
+        status:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic authentication. Use your Octobat secret key as the username and leave the password empty (curl: -u sk_live_xxx:). Use sk_test_ keys for test mode and sk_live_ keys for live mode.'

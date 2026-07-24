@@ -1,0 +1,175 @@
+openapi: 3.0.3
+info:
+  title: Octobat Coupons Customers API
+  description: 'Octobat is a billing, invoicing, and tax-compliance platform for online businesses. This OpenAPI document describes the public REST API at base URL https://apiv2.octobat.com. The API is Stripe-style: resource-oriented, form or JSON request bodies, and HTTP Basic authentication using your secret key as the username with an empty password (curl: -u sk_live_xxx:). Test-mode keys (sk_test_) and live-mode keys (sk_live_) select the environment.
+
+
+    Endpoint provenance: paths marked "confirmed" are demonstrated directly in Octobat''s own documentation (register-transactions and tax-calculation guides). The remaining CRUD and action paths are modeled from Octobat''s official Ruby SDK (github.com/0ctobat/octobat-ruby), which derives resource URLs as the snake_cased, pluralized class name and uses POST to create, PATCH to update, GET to retrieve/list, and DELETE to remove. Request and response schemas are representative, not exhaustive; consult the live API reference at https://v2apidoc.octobat.com for full field-level detail.
+
+
+    Operating status: Octobat was acquired by Mirakl in November 2021. The standalone marketing site now redirects to mirakl.com; docs.octobat.com and apiv2.octobat.com remain available to existing integrators.'
+  version: '2.0'
+  contact:
+    name: Octobat
+    url: https://docs.octobat.com
+    email: support@octobat.com
+servers:
+- url: https://apiv2.octobat.com
+  description: Octobat API v2 (production)
+security:
+- basicAuth: []
+tags:
+- name: Customers
+  description: Customers and their billing / tax details.
+paths:
+  /customers:
+    get:
+      operationId: listCustomers
+      tags:
+      - Customers
+      summary: List customers
+      responses:
+        '200':
+          description: A list of customers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createCustomer
+      tags:
+      - Customers
+      summary: Create a customer
+      description: Creates a customer with billing and tax details. (Confirmed in Octobat docs.)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreate'
+      responses:
+        '200':
+          description: The created customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /customers/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: retrieveCustomer
+      tags:
+      - Customers
+      summary: Retrieve a customer
+      responses:
+        '200':
+          description: The requested customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      operationId: updateCustomer
+      tags:
+      - Customers
+      summary: Update a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreate'
+      responses:
+        '200':
+          description: The updated customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: deleteCustomer
+      tags:
+      - Customers
+      summary: Delete a customer
+      responses:
+        '200':
+          description: The customer was deleted.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Customer:
+      allOf:
+      - $ref: '#/components/schemas/CustomerCreate'
+      - type: object
+        properties:
+          id:
+            type: string
+          object:
+            type: string
+            example: customer
+          created:
+            type: integer
+    CustomerCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        billing_address_country:
+          type: string
+          description: ISO country code.
+        billing_address_zip:
+          type: string
+        billing_address_city:
+          type: string
+        tax_number:
+          type: string
+    CustomerList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic authentication. Use your Octobat secret key as the username and leave the password empty (curl: -u sk_live_xxx:). Use sk_test_ keys for test mode and sk_live_ keys for live mode.'

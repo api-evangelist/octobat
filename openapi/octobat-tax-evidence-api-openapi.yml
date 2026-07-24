@@ -1,0 +1,161 @@
+openapi: 3.0.3
+info:
+  title: Octobat Coupons Tax Evidence API
+  description: 'Octobat is a billing, invoicing, and tax-compliance platform for online businesses. This OpenAPI document describes the public REST API at base URL https://apiv2.octobat.com. The API is Stripe-style: resource-oriented, form or JSON request bodies, and HTTP Basic authentication using your secret key as the username with an empty password (curl: -u sk_live_xxx:). Test-mode keys (sk_test_) and live-mode keys (sk_live_) select the environment.
+
+
+    Endpoint provenance: paths marked "confirmed" are demonstrated directly in Octobat''s own documentation (register-transactions and tax-calculation guides). The remaining CRUD and action paths are modeled from Octobat''s official Ruby SDK (github.com/0ctobat/octobat-ruby), which derives resource URLs as the snake_cased, pluralized class name and uses POST to create, PATCH to update, GET to retrieve/list, and DELETE to remove. Request and response schemas are representative, not exhaustive; consult the live API reference at https://v2apidoc.octobat.com for full field-level detail.
+
+
+    Operating status: Octobat was acquired by Mirakl in November 2021. The standalone marketing site now redirects to mirakl.com; docs.octobat.com and apiv2.octobat.com remain available to existing integrators.'
+  version: '2.0'
+  contact:
+    name: Octobat
+    url: https://docs.octobat.com
+    email: support@octobat.com
+servers:
+- url: https://apiv2.octobat.com
+  description: Octobat API v2 (production)
+security:
+- basicAuth: []
+tags:
+- name: Tax Evidence
+  description: Real-time tax determination for customers and carts / checkouts.
+paths:
+  /tax_evidences:
+    post:
+      operationId: createTaxEvidence
+      tags:
+      - Tax Evidence
+      summary: Create a tax evidence for a registered customer
+      description: Determines the applicable tax for a registered customer and returns a TaxEvidence with the applied rate and an ID to store with the order. (Confirmed in Octobat docs.)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - customer
+              properties:
+                customer:
+                  type: string
+                  description: Octobat customer ID.
+                product_type:
+                  type: string
+                  description: Product type used for tax categorization.
+      responses:
+        '200':
+          description: The created tax evidence.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxEvidence'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /tax_evidence_requests:
+    post:
+      operationId: createTaxEvidenceRequest
+      tags:
+      - Tax Evidence
+      summary: Create a tax evidence request for a not-yet-registered buyer
+      description: Calculates tax at cart / checkout time from a buyer's billing location, with optional B2B reverse-charge via a tax number. (Confirmed in Octobat docs.)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - customer_billing_address_country
+              properties:
+                customer_billing_address_country:
+                  type: string
+                customer_billing_address_zip:
+                  type: string
+                customer_billing_address_city:
+                  type: string
+                customer_tax_number:
+                  type: string
+                  description: For B2B reverse-charge validation.
+                product_type:
+                  type: string
+      responses:
+        '200':
+          description: The created tax evidence request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxEvidence'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /tax_evidence_requests/for_supplier:
+    post:
+      operationId: createTaxEvidenceRequestForSupplier
+      tags:
+      - Tax Evidence
+      summary: Create a supplier-side tax evidence request
+      description: Supplier-oriented tax determination (for platform / marketplace self-billing and commission scenarios). Modeled from the Octobat Ruby SDK for_supplier action.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                supplier:
+                  type: string
+                product_type:
+                  type: string
+      responses:
+        '200':
+          description: The created supplier tax evidence request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxEvidence'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    TaxEvidence:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          example: tax_evidence
+        applied_rate:
+          type: number
+          description: The tax rate applied
+          as a percentage.: null
+        tax:
+          type: string
+        declare_in_region:
+          type: string
+        customer:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: 'HTTP Basic authentication. Use your Octobat secret key as the username and leave the password empty (curl: -u sk_live_xxx:). Use sk_test_ keys for test mode and sk_live_ keys for live mode.'
