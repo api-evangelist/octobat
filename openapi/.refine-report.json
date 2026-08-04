@@ -1,0 +1,30 @@
+{
+  "provider": "octobat",
+  "sources": [
+    "octobat-coupons-api-openapi.yml",
+    "octobat-credit-notes-api-openapi.yml",
+    "octobat-customers-api-openapi.yml",
+    "octobat-invoices-api-openapi.yml",
+    "octobat-payouts-api-openapi.yml",
+    "octobat-products-api-openapi.yml",
+    "octobat-subscriptions-api-openapi.yml",
+    "octobat-tax-evidence-api-openapi.yml",
+    "octobat-transactions-api-openapi.yml"
+  ],
+  "outputs": [
+    "octobat-coupons-api-openapi.yml",
+    "octobat-credit-notes-api-openapi.yml",
+    "octobat-customers-api-openapi.yml",
+    "octobat-invoices-api-openapi.yml",
+    "octobat-payouts-api-openapi.yml",
+    "octobat-products-api-openapi.yml",
+    "octobat-subscriptions-api-openapi.yml",
+    "octobat-tax-evidence-api-openapi.yml",
+    "octobat-transactions-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
