@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octobat Coupons Tax Evidence API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tax Evidence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a tax evidence for a registered customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apiv2.octobat.com/tax_evidences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Determines the applicable tax for a registered customer and returns a TaxEvidence with the applied rate and an ID to store with the order. (Confirmed in Octobat docs.)"
+        },
+        {
+          "info": {
+            "name": "Create a tax evidence request for a not-yet-registered buyer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apiv2.octobat.com/tax_evidence_requests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculates tax at cart / checkout time from a buyer's billing location, with optional B2B reverse-charge via a tax number. (Confirmed in Octobat docs.)"
+        },
+        {
+          "info": {
+            "name": "Create a supplier-side tax evidence request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apiv2.octobat.com/tax_evidence_requests/for_supplier",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Supplier-oriented tax determination (for platform / marketplace self-billing and commission scenarios). Modeled from the Octobat Ruby SDK for_supplier action."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

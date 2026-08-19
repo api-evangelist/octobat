@@ -1,0 +1,498 @@
+{
+  "item": [
+    {
+      "id": "e34b87b9-26d1-47da-99a2-256463aab7c8",
+      "name": "Tax Evidence",
+      "description": {
+        "content": "Real-time tax determination for customers and carts / checkouts.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7f18c5d4-1d23-4881-80d9-d70e375e1351",
+          "name": "Create a tax evidence for a registered customer",
+          "request": {
+            "name": "Create a tax evidence for a registered customer",
+            "description": {
+              "content": "Determines the applicable tax for a registered customer and returns a TaxEvidence with the applied rate and an ID to store with the order. (Confirmed in Octobat docs.)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_evidences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9d9adab1-2885-4b4f-a874-efd3ae502b5a",
+              "name": "The created tax evidence.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_evidences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"object\": \"tax_evidence\",\n  \"applied_rate\": 1064.6328889396773,\n  \"tax\": \"string\",\n  \"declare_in_region\": \"string\",\n  \"customer\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb0f4a67-e5a2-4724-b2c0-23444d8e61d1",
+              "name": "Authentication failed - missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_evidences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"authentication_error\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1045bed5-cd11-48f0-a4f0-fe9ba9f0292a",
+          "name": "Create a tax evidence request for a not-yet-registered buyer",
+          "request": {
+            "name": "Create a tax evidence request for a not-yet-registered buyer",
+            "description": {
+              "content": "Calculates tax at cart / checkout time from a buyer's billing location, with optional B2B reverse-charge via a tax number. (Confirmed in Octobat docs.)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_evidence_requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_billing_address_country\": \"<string>\",\n  \"customer_billing_address_zip\": \"<string>\",\n  \"customer_billing_address_city\": \"<string>\",\n  \"customer_tax_number\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "97e20bf0-d0c1-4655-98a4-ca9c9c23a3b5",
+              "name": "The created tax evidence request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_evidence_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_billing_address_country\": \"<string>\",\n  \"customer_billing_address_zip\": \"<string>\",\n  \"customer_billing_address_city\": \"<string>\",\n  \"customer_tax_number\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"object\": \"tax_evidence\",\n  \"applied_rate\": 1064.6328889396773,\n  \"tax\": \"string\",\n  \"declare_in_region\": \"string\",\n  \"customer\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce727bac-23b5-4d0b-8638-922a300a8167",
+              "name": "Authentication failed - missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_evidence_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_billing_address_country\": \"<string>\",\n  \"customer_billing_address_zip\": \"<string>\",\n  \"customer_billing_address_city\": \"<string>\",\n  \"customer_tax_number\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"authentication_error\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c45076e0-71be-4acf-a5d8-6599e6bb1ce2",
+          "name": "Create a supplier-side tax evidence request",
+          "request": {
+            "name": "Create a supplier-side tax evidence request",
+            "description": {
+              "content": "Supplier-oriented tax determination (for platform / marketplace self-billing and commission scenarios). Modeled from the Octobat Ruby SDK for_supplier action.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tax_evidence_requests",
+                "for_supplier"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supplier\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "97cecd1f-9965-4fcf-bee5-b087bf16ccec",
+              "name": "The created supplier tax evidence request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_evidence_requests",
+                    "for_supplier"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"supplier\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"object\": \"tax_evidence\",\n  \"applied_rate\": 1064.6328889396773,\n  \"tax\": \"string\",\n  \"declare_in_region\": \"string\",\n  \"customer\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4deee388-7b6d-447a-8ea6-58414f2b70e8",
+              "name": "Authentication failed - missing or invalid secret key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tax_evidence_requests",
+                    "for_supplier"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"supplier\": \"<string>\",\n  \"product_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"type\": \"authentication_error\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://apiv2.octobat.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "65dbbb24-0024-4fd1-adf4-d3bb2e06317c",
+    "name": "Octobat Coupons Tax Evidence API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Octobat is a billing, invoicing, and tax-compliance platform for online businesses. This OpenAPI document describes the public REST API at base URL https://apiv2.octobat.com. The API is Stripe-style: resource-oriented, form or JSON request bodies, and HTTP Basic authentication using your secret key as the username with an empty password (curl: -u sk_live_xxx:). Test-mode keys (sk_test_) and live-mode keys (sk_live_) select the environment.\n\nEndpoint provenance: paths marked \"confirmed\" are demonstrated directly in Octobat's own documentation (register-transactions and tax-calculation guides). The remaining CRUD and action paths are modeled from Octobat's official Ruby SDK (github.com/0ctobat/octobat-ruby), which derives resource URLs as the snake_cased, pluralized class name and uses POST to create, PATCH to update, GET to retrieve/list, and DELETE to remove. Request and response schemas are representative, not exhaustive; consult the live API reference at https://v2apidoc.octobat.com for full field-level detail.\n\nOperating status: Octobat was acquired by Mirakl in November 2021. The standalone marketing site now redirects to mirakl.com; docs.octobat.com and apiv2.octobat.com remain available to existing integrators.\n\nContact Support:\n Name: Octobat\n Email: support@octobat.com",
+      "type": "text/plain"
+    }
+  }
+}

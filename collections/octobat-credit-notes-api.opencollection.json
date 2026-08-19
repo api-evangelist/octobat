@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Octobat Coupons Credit Notes API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Credit Notes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List credit notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apiv2.octobat.com/credit_notes",
+            "params": [
+              {
+                "name": "customer",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List credit notes"
+        },
+        {
+          "info": {
+            "name": "Create a credit note",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://apiv2.octobat.com/credit_notes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a credit note"
+        },
+        {
+          "info": {
+            "name": "Retrieve a credit note",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://apiv2.octobat.com/credit_notes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve a credit note"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
