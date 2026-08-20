@@ -166,6 +166,8 @@ apis:
   humanURL: https://docs.octobat.com/octobat/development/api
   baseURL: https://apiv2.octobat.com
   tags:
+  - Product
+  tags_raw:
   - Products
   properties:
   - type: OpenAPI
@@ -190,6 +192,8 @@ apis:
   humanURL: https://docs.octobat.com/octobat/development/api
   baseURL: https://apiv2.octobat.com
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
@@ -238,6 +242,8 @@ apis:
   humanURL: https://docs.octobat.com/octobat/development/api
   baseURL: https://apiv2.octobat.com
   tags:
+  - Transaction
+  tags_raw:
   - Transactions
   properties:
   - type: OpenAPI
