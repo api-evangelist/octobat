@@ -14,6 +14,18 @@ description: Octobat is a billing, invoicing, and tax-compliance platform for on
   by Mirakl in November 2021; the standalone marketing site (octobat.com) now redirects
   to mirakl.com, while the developer documentation at docs.octobat.com and the
   apiv2.octobat.com API remain available to existing integrators.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
