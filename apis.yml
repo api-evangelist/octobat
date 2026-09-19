@@ -277,6 +277,11 @@ apis:
     url: >-
       https://docs.octobat.com/octobat/integrations-docs/generic-integration/tax-calculation-for-a-cart-or-an-order
 common:
+- type: ParentCompany
+  url: https://apis.io/providers/mirakl/
+  name: Mirakl
+  x-relationship: acquired
+  x-evidence: "description names Mirakl and https://www.octobat.com now redirects to mirakl.com (roadmap#390, corroborate-dead.py)"
 - type: AgenticAccess
   url: agentic-access/octobat-agentic-access.yml
 - type: DomainSecurity
