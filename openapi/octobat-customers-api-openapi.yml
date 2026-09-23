@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Octobat Coupons Customers API
-  description: 'Octobat is a billing, invoicing, and tax-compliance platform for online businesses. This OpenAPI document describes the public REST API at base URL https://apiv2.octobat.com. The API is Stripe-style: resource-oriented, form or JSON request bodies, and HTTP Basic authentication using your secret key as the username with an empty password (curl: -u sk_live_xxx:). Test-mode keys (sk_test_) and live-mode keys (sk_live_) select the environment.
-
-
-    Endpoint provenance: paths marked "confirmed" are demonstrated directly in Octobat''s own documentation (register-transactions and tax-calculation guides). The remaining CRUD and action paths are modeled from Octobat''s official Ruby SDK (github.com/0ctobat/octobat-ruby), which derives resource URLs as the snake_cased, pluralized class name and uses POST to create, PATCH to update, GET to retrieve/list, and DELETE to remove. Request and response schemas are representative, not exhaustive; consult the live API reference at https://v2apidoc.octobat.com for full field-level detail.
-
-
-    Operating status: Octobat was acquired by Mirakl in November 2021. The standalone marketing site now redirects to mirakl.com; docs.octobat.com and apiv2.octobat.com remain available to existing integrators.'
+  title: Octobat Customers API
+  description: Octobat is a billing, invoicing, and tax-compliance platform for online businesses.
   version: '2.0'
   contact:
     name: Octobat
@@ -110,26 +104,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Authentication failed - missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Customer:
-      allOf:
-      - $ref: '#/components/schemas/CustomerCreate'
-      - type: object
-        properties:
-          id:
-            type: string
-          object:
-            type: string
-            example: customer
-          created:
-            type: integer
     CustomerCreate:
       type: object
       properties:
@@ -147,16 +122,6 @@ components:
           type: string
         tax_number:
           type: string
-    CustomerList:
-      type: object
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
     Error:
       type: object
       properties:
@@ -168,6 +133,35 @@ components:
               example: authentication_error
             message:
               type: string
+    CustomerList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
+    Customer:
+      allOf:
+      - $ref: '#/components/schemas/CustomerCreate'
+      - type: object
+        properties:
+          id:
+            type: string
+          object:
+            type: string
+            example: customer
+          created:
+            type: integer
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

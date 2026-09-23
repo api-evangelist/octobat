@@ -1,15 +1,7 @@
 {
   "provider": "octobat",
   "sources": [
-    "octobat-coupons-api-openapi.yml",
-    "octobat-credit-notes-api-openapi.yml",
-    "octobat-customers-api-openapi.yml",
-    "octobat-invoices-api-openapi.yml",
-    "octobat-payouts-api-openapi.yml",
-    "octobat-products-api-openapi.yml",
-    "octobat-subscriptions-api-openapi.yml",
-    "octobat-tax-evidence-api-openapi.yml",
-    "octobat-transactions-api-openapi.yml"
+    "_original/octobat-openapi.yml"
   ],
   "outputs": [
     "octobat-coupons-api-openapi.yml",
@@ -25,6 +17,20 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "octobat-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "octobat-coupons-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-credit-notes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-payouts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-products-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-tax-evidence-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "octobat-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
