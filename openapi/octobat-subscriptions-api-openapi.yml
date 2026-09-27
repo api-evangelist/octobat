@@ -117,6 +117,20 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          example: subscription
+        customer:
+          type: string
+        currency:
+          type: string
+        status:
+          type: string
     SubscriptionList:
       type: object
       properties:
@@ -138,20 +152,6 @@ components:
               example: authentication_error
             message:
               type: string
-    Subscription:
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          type: string
-          example: subscription
-        customer:
-          type: string
-        currency:
-          type: string
-        status:
-          type: string
   responses:
     Unauthorized:
       description: Authentication failed - missing or invalid secret key.

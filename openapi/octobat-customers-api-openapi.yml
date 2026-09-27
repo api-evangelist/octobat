@@ -104,6 +104,13 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     CustomerCreate:
       type: object
@@ -133,16 +140,6 @@ components:
               example: authentication_error
             message:
               type: string
-    CustomerList:
-      type: object
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
     Customer:
       allOf:
       - $ref: '#/components/schemas/CustomerCreate'
@@ -155,13 +152,16 @@ components:
             example: customer
           created:
             type: integer
-  responses:
-    Unauthorized:
-      description: Authentication failed - missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    CustomerList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
   securitySchemes:
     basicAuth:
       type: http

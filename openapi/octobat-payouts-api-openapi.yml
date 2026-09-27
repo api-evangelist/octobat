@@ -65,17 +65,6 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              example: authentication_error
-            message:
-              type: string
     Payout:
       type: object
       properties:
@@ -102,6 +91,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Payout'
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
   responses:
     Unauthorized:
       description: Authentication failed - missing or invalid secret key.

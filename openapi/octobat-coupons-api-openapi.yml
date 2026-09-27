@@ -145,28 +145,25 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    CouponList:
+    Error:
       type: object
       properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Coupon'
-    CouponCreate:
-      type: object
-      properties:
-        code:
-          type: string
-        percent_off:
-          type: number
-        amount_off:
-          type: integer
-        currency:
-          type: string
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
     Coupon:
       allOf:
       - $ref: '#/components/schemas/CouponCreate'
@@ -179,24 +176,27 @@ components:
             example: coupon
           active:
             type: boolean
-    Error:
+    CouponCreate:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              example: authentication_error
-            message:
-              type: string
-  responses:
-    Unauthorized:
-      description: Authentication failed - missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+        code:
+          type: string
+        percent_off:
+          type: number
+        amount_off:
+          type: integer
+        currency:
+          type: string
+    CouponList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coupon'
   securitySchemes:
     basicAuth:
       type: http
