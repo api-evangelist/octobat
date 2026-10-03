@@ -115,16 +115,6 @@ components:
               example: authentication_error
             message:
               type: string
-    ProductList:
-      type: object
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Product'
     ProductCreate:
       type: object
       properties:
@@ -135,6 +125,16 @@ components:
           description: Drives tax categorization.
         description:
           type: string
+    ProductList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
   responses:
     Unauthorized:
       description: Authentication failed - missing or invalid secret key.

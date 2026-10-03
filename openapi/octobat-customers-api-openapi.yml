@@ -104,14 +104,40 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Authentication failed - missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    Customer:
+      allOf:
+      - $ref: '#/components/schemas/CustomerCreate'
+      - type: object
+        properties:
+          id:
+            type: string
+          object:
+            type: string
+            example: customer
+          created:
+            type: integer
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
+    CustomerList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Customer'
     CustomerCreate:
       type: object
       properties:
@@ -129,39 +155,13 @@ components:
           type: string
         tax_number:
           type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              example: authentication_error
-            message:
-              type: string
-    Customer:
-      allOf:
-      - $ref: '#/components/schemas/CustomerCreate'
-      - type: object
-        properties:
-          id:
-            type: string
-          object:
-            type: string
-            example: customer
-          created:
-            type: integer
-    CustomerList:
-      type: object
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Customer'
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

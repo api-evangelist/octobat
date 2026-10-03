@@ -116,14 +116,17 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Authentication failed - missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    TransactionList:
+      type: object
+      properties:
+        object:
+          type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
     Error:
       type: object
       properties:
@@ -135,28 +138,6 @@ components:
               example: authentication_error
             message:
               type: string
-    TransactionList:
-      type: object
-      properties:
-        object:
-          type: string
-          example: list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-    Transaction:
-      allOf:
-      - $ref: '#/components/schemas/TransactionCreate'
-      - type: object
-        properties:
-          id:
-            type: string
-          object:
-            type: string
-            example: transaction
-          created:
-            type: integer
     TransactionCreate:
       type: object
       properties:
@@ -174,6 +155,25 @@ components:
           type: string
         status:
           type: string
+    Transaction:
+      allOf:
+      - $ref: '#/components/schemas/TransactionCreate'
+      - type: object
+        properties:
+          id:
+            type: string
+          object:
+            type: string
+            example: transaction
+          created:
+            type: integer
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

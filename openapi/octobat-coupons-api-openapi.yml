@@ -145,13 +145,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Authentication failed - missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -164,6 +157,17 @@ components:
               example: authentication_error
             message:
               type: string
+    CouponCreate:
+      type: object
+      properties:
+        code:
+          type: string
+        percent_off:
+          type: number
+        amount_off:
+          type: integer
+        currency:
+          type: string
     Coupon:
       allOf:
       - $ref: '#/components/schemas/CouponCreate'
@@ -176,17 +180,6 @@ components:
             example: coupon
           active:
             type: boolean
-    CouponCreate:
-      type: object
-      properties:
-        code:
-          type: string
-        percent_off:
-          type: number
-        amount_off:
-          type: integer
-        currency:
-          type: string
     CouponList:
       type: object
       properties:
@@ -197,6 +190,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Coupon'
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

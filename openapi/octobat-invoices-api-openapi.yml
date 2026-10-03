@@ -308,34 +308,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Authentication failed - missing or invalid secret key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    InvoiceItemCreate:
-      type: object
-      properties:
-        currency:
-          type: string
-        gross_amount:
-          type: integer
-        description:
-          type: string
-        tax_evidence:
-          type: string
-          description: Tax evidence ID from the Tax Evidence API.
-        tax:
-          type: string
-        tax_rate:
-          type: number
-        declare_in_region:
-          type: string
-        product_type:
-          type: string
     Error:
       type: object
       properties:
@@ -359,17 +332,6 @@ components:
           type: string
         gross_amount:
           type: integer
-        description:
-          type: string
-    InvoiceCreate:
-      type: object
-      properties:
-        customer:
-          type: string
-          description: Octobat customer ID.
-        currency:
-          type: string
-          example: EUR
         description:
           type: string
     InvoiceList:
@@ -415,6 +377,44 @@ components:
           type: string
         created:
           type: integer
+    InvoiceItemCreate:
+      type: object
+      properties:
+        currency:
+          type: string
+        gross_amount:
+          type: integer
+        description:
+          type: string
+        tax_evidence:
+          type: string
+          description: Tax evidence ID from the Tax Evidence API.
+        tax:
+          type: string
+        tax_rate:
+          type: number
+        declare_in_region:
+          type: string
+        product_type:
+          type: string
+    InvoiceCreate:
+      type: object
+      properties:
+        customer:
+          type: string
+          description: Octobat customer ID.
+        currency:
+          type: string
+          example: EUR
+        description:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed - missing or invalid secret key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http
