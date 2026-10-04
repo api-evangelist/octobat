@@ -117,17 +117,6 @@ components:
             example: customer
           created:
             type: integer
-    Error:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            type:
-              type: string
-              example: authentication_error
-            message:
-              type: string
     CustomerList:
       type: object
       properties:
@@ -155,6 +144,17 @@ components:
           type: string
         tax_number:
           type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: authentication_error
+            message:
+              type: string
   responses:
     Unauthorized:
       description: Authentication failed - missing or invalid secret key.
