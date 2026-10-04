@@ -277,6 +277,9 @@ apis:
     url: >-
       https://docs.octobat.com/octobat/integrations-docs/generic-integration/tax-calculation-for-a-cart-or-an-order
 common:
+- type: CapabilityMap
+  url: capabilities/octobat-capability-edges.yml
+  name: Octobat Business Capability Map
 - type: ParentCompany
   url: https://apis.io/providers/mirakl/
   name: Mirakl

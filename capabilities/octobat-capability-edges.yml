@@ -1,0 +1,46 @@
+slug: octobat
+provider: Octobat
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Invoices
+  spec_file: octobat-invoices-api-openapi.yml
+  capability_id: BC-4250.30
+  capability_id_l1: BC-4250
+  capability_name: Invoicing & Statement Management
+  confidence: 0.85
+  evidence: PATCH /invoices/{id}/confirm  confirmInvoice  Confirm (finalize) an invoice; POST /invoices/{id}/send  sendInvoice  Send
+    an invoice by email; PATCH /invoices/{id}/cancel_and_replace
+  reason: Operations create, finalise, deliver, adjust, cancel and replace invoices for a SaaS billing
+    platform — squarely invoice generation, delivery and adjustment.
+- tag: Credit Notes
+  spec_file: octobat-credit-notes-api-openapi.yml
+  capability_id: BC-4250.30
+  capability_id_l1: BC-4250
+  capability_name: Invoicing & Statement Management
+  confidence: 0.75
+  evidence: POST /credit_notes  createCreditNote  Create a credit note
+  reason: Credit notes are invoice adjustments issued against billed transactions; the vendor is a billing/invoicing
+    platform for online businesses, so this sits in Invoicing & Statement Management (generation and adjustment
+    of invoices).
+- tag: Subscriptions
+  spec_file: octobat-subscriptions-api-openapi.yml
+  capability_id: BC-4240
+  capability_id_l1: BC-4240
+  capability_name: Subscription Lifecycle Management
+  confidence: 0.75
+  evidence: POST /subscriptions  createSubscription  Create a subscription; POST /usage_items  createUsageItem  Record
+    a usage item on a subscription
+  reason: Creation and retrieval of recurring subscriptions with usage recording on a SaaS billing platform
+    — subscription lifecycle. The mix of creation (provisioning/contracting) and usage recording (metering)
+    makes the sub-capability ambiguous, so L1 only.
